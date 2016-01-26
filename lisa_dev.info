@@ -1,0 +1,3 @@
+name = Lisa's dev functions
+description = "Provides a place to put useful debugging code."
+core = 7.x
