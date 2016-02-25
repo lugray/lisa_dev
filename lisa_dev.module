@@ -13,3 +13,14 @@ function lisa_dev_get_unsafe_query(SelectQuery $query) {
   );
   return str_replace(array_keys($args), array_values($args), (string) $query) . PHP_EOL;
 }
+
+function lisa_dev_preprocess_html(&$variables) {
+  if (module_exists('admin_menu') &&  theme_exists('uottawa_zen_assets')) {
+    drupal_add_css(drupal_get_path('module', 'lisa_dev') . '/lisa_dev.admin_menu_fix.less');
+  }
+}
+
+function theme_exists($theme_name) {
+  $themes = list_themes();
+  return isset($themes[$theme_name]) && $themes[$theme_name]->status == 1;
+}
