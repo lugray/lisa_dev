@@ -24,3 +24,21 @@ function theme_exists($theme_name) {
   $themes = list_themes();
   return isset($themes[$theme_name]) && $themes[$theme_name]->status == 1;
 }
+
+function lisa_dev_menu_alter(&$menu) {
+  if (!module_exists('dual_language_editor')){
+    return;
+  }
+  $info = entity_get_info('node');
+  $bundles = array_keys($info['bundles']);
+  foreach ($bundles as $bundle) {
+    $bundle = str_replace('_', '-', $bundle);
+    $menu["node/add/$bundle"]['page callback'] = 'lisa_dev_add_node_goto';
+    $menu["node/add/$bundle"]['module'] = 'lisa_dev';
+    unset($menu["node/add/$bundle"]['file']);
+  }
+}
+
+function lisa_dev_add_node_goto($bundle) {
+  drupal_goto("entity/node/$bundle/add");
+}
