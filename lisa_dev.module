@@ -7,11 +7,12 @@ function lisa_dev_get_unsafe_query(SelectQuery $query) {
       $args[$key] = "'" . $value . "'";
     }
   }
-  $args += array(
-    '{' => '',
-    '}' => ' AS',
-  );
-  return str_replace(array_keys($args), array_values($args), (string) $query) . PHP_EOL;
+  $str_query = (string) $query;
+  foreach ($args as $placeholder => $value) {
+    $str_query = preg_replace('/' . $placeholder . '\b/', $value, $str_query);
+  }
+  $str_query = str_replace(array('{', '}'), array('', ' AS'), $str_query);
+  return $str_query;
 }
 
 function lisa_dev_preprocess_html(&$variables) {
